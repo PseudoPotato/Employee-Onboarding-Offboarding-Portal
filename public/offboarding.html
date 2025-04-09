@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Offboarding</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Floating label styles */
+    .form-group {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 1.2rem 1rem 0.6rem 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      transition: all 0.2s ease-out;
+      background-color: white;
+    }
+    
+    /* Date input styling */
+    input[type="date"].form-control {
+      padding-top: 1.2rem;
+      padding-bottom: 0.6rem;
+    }
+    
+    /* Hide default date placeholder */
+    input[type="date"]:not(:focus):invalid::-webkit-datetime-edit {
+      color: transparent;
+    }
+    
+    /* Floating label animation */
+    .floating-label {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      color: #6b7280;
+      font-size: 1rem;
+      transition: all 0.2s ease-out;
+      pointer-events: none;
+      transform-origin: left top;
+    }
+    
+    /* Label animation states */
+    .form-control:focus ~ .floating-label,
+    .form-control:not(:placeholder-shown) ~ .floating-label {
+      transform: translateY(-0.5rem) scale(0.75);
+      color: #ef4444;
+      background-color: white;
+      padding: 0 0.3rem;
+      left: 0.8rem;
+    }
+    
+    .form-control:focus ~ .floating-label {
+      z-index: 10;
+    }
+    
+    /* Input focus styles */
+    .form-control:focus {
+      outline: none;
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+    }
+    
+    /* Select dropdown styling */
+    .select-wrapper {
+      position: relative;
+    }
+    
+    .select-wrapper::after {
+      content: "▼";
+      position: absolute;
+      right: 1rem;
+      top: 1.2rem;
+      color: #6b7280;
+      pointer-events: none;
+      font-size: 0.75rem;
+    }
+    
+    select.form-control {
+      appearance: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="container mx-auto px-4 py-8">
+    <header class="mb-8 flex justify-between items-center">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800 flex items-center">
+          <i class="fas fa-user-minus text-red-500 mr-3"></i>
+          Employee Offboarding
+        </h1>
+        <p class="text-gray-600">Manage employee exits from the organization</p>
+      </div>
+      <div>
+        <a href="/" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition duration-200">
+          <i class="fas fa-home mr-2"></i> Home
+        </a>
+      </div>
+    </header>
+
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-red-100">
+      <div class="bg-gradient-to-r from-red-500 to-pink-600 text-white text-center py-5 px-6">
+        <h2 class="text-2xl font-bold">
+          <i class="fas fa-user-minus mr-2"></i> Offboarding Details
+        </h2>
+      </div>
+      
+      <form id="offboardingForm" class="p-6 md:p-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Employee ID -->
+          <div class="form-group">
+            <input type="text" id="eid" required class="form-control" placeholder=" ">
+            <label for="eid" class="floating-label">Employee ID</label>
+          </div>
+          
+          <!-- Name -->
+          <div class="form-group">
+            <input type="text" id="name" required class="form-control" placeholder=" ">
+            <label for="name" class="floating-label">Full Name</label>
+          </div>
+          
+          <!-- Email -->
+          <div class="form-group md:col-span-2">
+            <input type="email" id="email" required class="form-control" placeholder=" ">
+            <label for="email" class="floating-label">Email Address</label>
+          </div>
+          
+          <!-- Last Working Day (Date field) -->
+          <div class="form-group">
+            <input type="date" id="lastWorkingDay" required class="form-control" placeholder=" ">
+            <label for="lastWorkingDay" class="floating-label">Last Working Day</label>
+          </div>
+          
+          <!-- Offboarding Reason -->
+          <div class="form-group select-wrapper">
+            <select id="reason" required class="form-control" placeholder=" ">
+              <option value="" disabled selected></option>
+              <option value="voluntary">Voluntary (Resignation)</option>
+              <option value="involuntary">Involuntary (Termination)</option>
+              <option value="other">Other</option>
+            </select>
+            <label for="reason" class="floating-label">Offboarding Reason</label>
+          </div>
+          
+          <!-- Other Reason (hidden by default) -->
+          <div id="otherReasonContainer" class="form-group md:col-span-2 hidden">
+            <textarea id="otherReason" class="form-control" placeholder=" " rows="3"></textarea>
+            <label for="otherReason" class="floating-label">Please specify reason</label>
+          </div>
+          
+          <!-- Exit Notes -->
+          <div class="form-group md:col-span-2">
+            <textarea id="exitNotes" class="form-control" placeholder=" " rows="3"></textarea>
+            <label for="exitNotes" class="floating-label">Exit Notes/Comments</label>
+          </div>
+        </div>
+        
+        <button type="submit" id="submitButton"
+          class="w-full mt-6 bg-gradient-to-r from-red-500 to-pink-600 text-white py-3 rounded-lg hover:from-red-600 hover:to-pink-700 transition duration-300 shadow-md hover:shadow-lg flex items-center justify-center">
+          <i class="fas fa-save mr-2"></i>
+          <span id="submitText">Offboard Employee</span>
+          <span id="submitSpinner" class="ml-2 hidden">
+            <i class="fas fa-spinner fa-spin"></i>
+          </span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById("offboardingForm");
+      const reasonSelect = document.getElementById("reason");
+      const otherReasonContainer = document.getElementById("otherReasonContainer");
+      
+      // Initialize form fields from URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('eid')) {
+        document.getElementById("eid").value = urlParams.get('eid');
+        document.getElementById("eid").dispatchEvent(new Event('input'));
+      }
+      if (urlParams.has('name')) {
+        document.getElementById("name").value = decodeURIComponent(urlParams.get('name'));
+        document.getElementById("name").dispatchEvent(new Event('input'));
+      }
+      if (urlParams.has('email')) {
+        document.getElementById("email").value = decodeURIComponent(urlParams.get('email'));
+        document.getElementById("email").dispatchEvent(new Event('input'));
+      }
+
+      // Show/hide other reason field
+      reasonSelect.addEventListener('change', () => {
+        if (reasonSelect.value === 'other') {
+          otherReasonContainer.classList.remove('hidden');
+          document.getElementById("otherReason").required = true;
+        } else {
+          otherReasonContainer.classList.add('hidden');
+          document.getElementById("otherReason").required = false;
+        }
+      });
+      
+      // Form submission
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const eid = document.getElementById("eid").value;
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const lastWorkingDay = document.getElementById("lastWorkingDay").value;
+        const reason = document.getElementById("reason").value;
+        const otherReason = reason === 'other' ? document.getElementById("otherReason").value : null;
+        const exitNotes = document.getElementById("exitNotes").value;
+
+        if (!eid || !name || !email || !lastWorkingDay || !reason || (reason === 'other' && !otherReason)) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Incomplete Form',
+            text: 'Please fill in all required fields.',
+            confirmButtonColor: '#4CAF50'
+          });
+          return;
+        }
+
+        try {
+          const submitButton = document.getElementById("submitButton");
+          const submitText = document.getElementById("submitText");
+          const submitSpinner = document.getElementById("submitSpinner");
+          
+          submitButton.disabled = true;
+          submitText.textContent = "Processing...";
+          submitSpinner.classList.remove("hidden");
+
+          const response = await fetch("/offboard", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+              eid, 
+              name, 
+              email, 
+              lastWorkingDay,
+              reason,
+              otherReason,
+              exitNotes
+            }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: data.message,
+              confirmButtonColor: '#4CAF50'
+            }).then(() => {
+              window.location.href = '/employees';
+            });
+          } else {
+            throw new Error(data.message || 'Failed to process offboarding');
+          }
+        } catch (error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Offboarding Failed',
+            text: error.message || 'Failed to process offboarding',
+            confirmButtonColor: '#ef4444'
+          });
+        } finally {
+          const submitButton = document.getElementById("submitButton");
+          if (submitButton) {
+            submitButton.disabled = false;
+            document.getElementById("submitText").textContent = "Offboard Employee";
+            document.getElementById("submitSpinner").classList.add("hidden");
+          }
+        }
+      });
+
+      // Initialize all floating labels
+      document.querySelectorAll('.form-control').forEach(input => {
+        if (input.value) {
+          input.dispatchEvent(new Event('input'));
+        }
+      });
+    });
+  </script>
+</body>
+</html>

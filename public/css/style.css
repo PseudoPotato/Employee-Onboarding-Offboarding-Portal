@@ -1,0 +1,84 @@
+/* Floating labels */
+.floating-label {
+    position: absolute;
+    top: 0.75rem;
+    left: 1rem;
+    transition: all 0.2s ease-out;
+    pointer-events: none;
+    color: #6b7280;
+  }
+  
+  .input-filled ~ .floating-label,
+  input:focus ~ .floating-label,
+  textarea:focus ~ .floating-label,
+  select:focus ~ .floating-label {
+    top: -0.5rem;
+    left: 0.8rem;
+    font-size: 0.75rem;
+    background: white;
+    padding: 0 0.25rem;
+    color: #3b82f6; /* Blue for consistency */
+  }
+  
+  /* Input focus states */
+  .input-focus:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    border-color: #3b82f6;
+    outline: none;
+  }
+  
+  /* Table styles */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th {
+    text-align: left;
+    padding: 12px;
+  }
+  
+  td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  /* Loading spinner */
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .grid-cols-1 {
+        grid-template-columns: 1fr;
+    }
+    
+    .md\:grid-cols-2 {
+        grid-template-columns: 1fr;
+    }
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }

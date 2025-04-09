@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Employee Records</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+        <div class="relative w-full sm:w-64">
+            <input type="text" id="searchInput" placeholder="Search employees..." 
+                class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <div class="absolute right-3 top-2.5 text-gray-400">
+                <i class="fas fa-search"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex justify-between items-center mb-6">
+        <div>
+          <h1 class="text-3xl font-bold text-blue-600 flex items-center">
+            <i class="fas fa-list mr-3"></i>
+            Employee Records Management
+          </h1>
+          <p class="text-gray-600">View and manage all employee records</p>
+        </div>
+        <div>
+          <a href="/" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition duration-200">
+            <i class="fas fa-home mr-2"></i> Home
+          </a>
+        </div>
+    </div>
+    
+</head>
+<body class="bg-gray-50 p-4 md:p-8">
+    <div class="container mx-auto">
+        <div class="bg-white shadow-xl rounded-lg overflow-hidden animate__animated animate__fadeIn">
+            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-center py-4 px-6">
+                <h1 class="text-3xl font-bold">Employee Records Management</h1>
+                <p class="mt-1 opacity-90">View and manage all employee records</p>
+            </div>
+            
+            <div class="p-4 md:p-6">
+                <div class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div class="flex space-x-2">
+                        <button id="showActive" class="px-4 py-2 bg-blue-500 text-white rounded-lg">Active Employees</button>
+                        <button id="showOffboarded" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">Offboarded Employees</button>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                        <a href="/onboarding" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg flex items-center justify-center transition duration-200">
+                            <i class="fas fa-user-plus mr-2"></i>Onboard New
+                        </a>
+                        <a href="/dashboard" class="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg flex items-center justify-center transition duration-200">
+                            <i class="fas fa-chart-bar mr-2"></i>Analytics
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+                    <div id="loadingIndicator" class="p-8 text-center hidden">
+                        <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500 mb-2"></div>
+                        <p class="text-gray-600">Loading employee records...</p>
+                    </div>
+                    
+                    <!-- Active Employees Table -->
+                    <table id="activeTable" class="w-full divide-y divide-gray-200">
+                        <thead class="bg-gradient-to-r from-blue-50 to-indigo-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Employee ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Name</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Email</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Project ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Onboard Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activeTableBody" class="bg-white divide-y divide-gray-200">
+                            <!-- Employees will be dynamically added here -->
+                        </tbody>
+                    </table>
+                    
+                    <!-- Offboarded Employees Table -->
+                    <table id="offboardedTable" class="w-full divide-y divide-gray-200 hidden">
+                        <thead class="bg-gradient-to-r from-red-50 to-pink-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Employee ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Name</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Email</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Offboard Reason</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Offboard Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="offboardedTableBody" class="bg-white divide-y divide-gray-200">
+                            <!-- Offboarded employees will be dynamically added here -->
+                        </tbody>
+                    </table>
+                    
+                    <div id="noResults" class="hidden p-8 text-center">
+                        <i class="fas fa-user-slash text-4xl text-gray-300 mb-3"></i>
+                        <h3 class="text-lg font-medium text-gray-700">No employee records found</h3>
+                        <p class="text-gray-500 mt-1">Try adjusting your search or add a new employee</p>
+                    </div>
+                </div>
+
+                <!-- Pagination Container -->
+                <div id="pagination" class="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4">
+                    <div id="recordsInfo" class="text-sm text-gray-600"></div>
+                    <div class="flex space-x-1">
+                        <!-- Pagination buttons will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Global error handler
+        window.addEventListener('error', function(event) {
+            console.error('Global error:', event.error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Application Error',
+                text: 'An unexpected error occurred. Please try again.',
+                confirmButtonColor: '#3B82F6'
+            });
+        });
+    </script>
+    <script src="js/employees.js" defer></script>
+</body>
+</html>

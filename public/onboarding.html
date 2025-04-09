@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Onboarding</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Floating label styles */
+    .form-group {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 1.2rem 1rem 0.6rem 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      transition: all 0.2s ease-out;
+      background-color: white;
+    }
+    
+    /* Special styling for date input */
+    input[type="date"].form-control {
+      padding-top: 1.2rem;
+      padding-bottom: 0.6rem;
+    }
+    
+    /* Hide the default date placeholder */
+    input[type="date"]:not(:focus):invalid::-webkit-datetime-edit {
+      color: transparent;
+    }
+    
+    /* Floating label animation */
+    .floating-label {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      color: #6b7280;
+      font-size: 1rem;
+      transition: all 0.2s ease-out;
+      pointer-events: none;
+      transform-origin: left top;
+    }
+    
+    /* Label animation when input is focused or has value */
+    .form-control:focus ~ .floating-label,
+    .form-control:not(:placeholder-shown) ~ .floating-label {
+      transform: translateY(-0.5rem) scale(0.75);
+      color: #3b82f6;
+      background-color: white;
+      padding: 0 0.3rem;
+      left: 0.8rem;
+    }
+    
+    /* Ensure the label stays above the input border */
+    .form-control:focus ~ .floating-label {
+      z-index: 10;
+    }
+    
+    /* Input focus styles */
+    .form-control:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+    
+    /* Select dropdown styling */
+    .select-wrapper {
+      position: relative;
+    }
+    
+    .select-wrapper::after {
+      content: "▼";
+      position: absolute;
+      right: 1rem;
+      top: 1.2rem;
+      color: #6b7280;
+      pointer-events: none;
+      font-size: 0.75rem;
+    }
+    
+    select.form-control {
+      appearance: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="container mx-auto px-4 py-8">
+    <!-- Header Section -->
+    <header class="mb-8 flex justify-between items-center">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800 flex items-center">
+          <i class="fas fa-user-plus text-blue-500 mr-3"></i>
+          Employee Onboarding
+        </h1>
+        <p class="text-gray-600">Add new employees to the system</p>
+      </div>
+      <div>
+        <a href="/" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition duration-200">
+          <i class="fas fa-home mr-2"></i> Home
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-blue-100 animate__animated animate__fadeIn">
+      <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-center py-5 px-6">
+        <h2 class="text-2xl font-bold">
+          <i class="fas fa-user-plus mr-2"></i> New Employee Details
+        </h2>
+      </div>
+      
+      <form id="onboardingForm" class="p-6 md:p-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Employee ID -->
+          <div class="form-group">
+            <input type="text" id="eid" required class="form-control" placeholder=" ">
+            <label for="eid" class="floating-label">Employee ID</label>
+          </div>
+          
+          <!-- Name -->
+          <div class="form-group">
+            <input type="text" id="name" required class="form-control" placeholder=" ">
+            <label for="name" class="floating-label">Full Name</label>
+          </div>
+          
+          <!-- Email -->
+          <div class="form-group md:col-span-2">
+            <input type="email" id="email" required class="form-control" placeholder=" ">
+            <label for="email" class="floating-label">Email Address</label>
+          </div>
+          
+          <!-- Manager Name -->
+          <div class="form-group">
+            <input type="text" id="managerName" required class="form-control" placeholder=" ">
+            <label for="managerName" class="floating-label">Manager Name</label>
+          </div>
+          
+          <!-- Manager Email -->
+          <div class="form-group">
+            <input type="email" id="managerEmail" required class="form-control" placeholder=" ">
+            <label for="managerEmail" class="floating-label">Manager Email</label>
+          </div>
+          
+          <!-- Project ID -->
+          <div class="form-group md:col-span-2">
+            <input type="text" id="projectId" required class="form-control" placeholder=" ">
+            <label for="projectId" class="floating-label">Project ID</label>
+          </div>
+          
+          <!-- Department -->
+          <div class="form-group">
+            <input type="text" id="department" required class="form-control" placeholder=" ">
+            <label for="department" class="floating-label">Department</label>
+          </div>
+          
+          <!-- Position -->
+          <div class="form-group">
+            <input type="text" id="position" required class="form-control" placeholder=" ">
+            <label for="position" class="floating-label">Position/Title</label>
+          </div>
+          
+          <!-- Start Date -->
+          <div class="form-group">
+            <input type="date" id="startDate" required class="form-control" placeholder=" ">
+            <label for="startDate" class="floating-label">Start Date</label>
+          </div>
+          
+          <!-- Employment Type -->
+          <div class="form-group select-wrapper">
+            <select id="employmentType" required class="form-control" placeholder=" ">
+              <option value="" disabled selected></option>
+              <option value="full-time">Full-time</option>
+              <option value="part-time">Part-time</option>
+              <option value="contract">Contract</option>
+              <option value="intern">Intern</option>
+            </select>
+            <label for="employmentType" class="floating-label">Employment Type</label>
+          </div>
+        </div>
+        
+        <button type="submit" id="submitButton"
+          class="w-full mt-6 bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-3 rounded-lg hover:from-blue-600 hover:to-indigo-700 transition duration-300 shadow-md hover:shadow-lg flex items-center justify-center">
+          <i class="fas fa-save mr-2"></i>
+          <span id="submitText">Onboard Employee</span>
+          <span id="submitSpinner" class="ml-2 hidden">
+            <i class="fas fa-spinner fa-spin"></i>
+          </span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById("onboardingForm");
+      
+      // Initialize all form controls
+      document.querySelectorAll('.form-control').forEach(input => {
+        // Set initial state based on existing value
+        if (input.value) {
+          input.dispatchEvent(new Event('input'));
+        }
+        
+        // Handle input events
+        input.addEventListener('input', function() {
+          // This is handled by the :not(:placeholder-shown) CSS selector
+        });
+      });
+
+      // Special handling for date field to ensure label moves up when date is selected
+      const dateInput = document.getElementById('startDate');
+      dateInput.addEventListener('change', function() {
+        // Trigger a fake input event to activate the floating label
+        this.dispatchEvent(new Event('input'));
+      });
+
+      // Form submission handler
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        // Retrieve input values from the form
+        const eid = document.getElementById("eid").value;
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const managerName = document.getElementById("managerName").value;
+        const managerEmail = document.getElementById("managerEmail").value;
+        const projectId = document.getElementById("projectId").value;
+        const department = document.getElementById("department").value;
+        const position = document.getElementById("position").value;
+        const startDate = document.getElementById("startDate").value;
+        const employmentType = document.getElementById("employmentType").value;
+
+        // Validate input fields
+        if (!eid || !name || !email || !managerName || !managerEmail || !projectId || 
+            !department || !position || !startDate || !employmentType) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Incomplete Form',
+            text: 'Please fill in all required fields.',
+            confirmButtonColor: '#4CAF50'
+          });
+          return;
+        }
+
+        try {
+          // Show loading state
+          const submitButton = document.getElementById("submitButton");
+          const submitText = document.getElementById("submitText");
+          const submitSpinner = document.getElementById("submitSpinner");
+          
+          submitButton.disabled = true;
+          submitText.textContent = "Processing...";
+          submitSpinner.classList.remove("hidden");
+
+          // Send form data to the server via POST request
+          const response = await fetch("/onboard", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+              eid, 
+              name, 
+              email, 
+              managerName, 
+              managerEmail, 
+              projectId,
+              department,
+              position,
+              startDate,
+              employmentType
+            }),
+          });
+
+          const data = await response.text();
+
+          if (response.ok) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: data,
+              confirmButtonColor: '#4CAF50',
+              customClass: {
+                popup: 'animate__animated animate__bounceIn'
+              }
+            });
+            form.reset();
+            // Reset floating labels
+            document.querySelectorAll('.form-control').forEach(input => {
+              input.classList.remove('has-value');
+            });
+          } else {
+            throw new Error(data);
+          }
+        } catch (error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Failed to onboard employee.',
+            confirmButtonColor: '#FF5722'
+          });
+          console.error("Error:", error);
+        } finally {
+          // Reset button state
+          const submitButton = document.getElementById("submitButton");
+          if (submitButton) {
+            submitButton.disabled = false;
+            document.getElementById("submitText").textContent = "Onboard Employee";
+            document.getElementById("submitSpinner").classList.add("hidden");
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
